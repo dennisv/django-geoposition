@@ -56,7 +56,6 @@ if (jQuery != undefined) {
         results.clearLayers();
         for (var i = data.results.length - 1; i >= 0; i--) {
           var latlng = data.results[i].latlng;
-          console.log(latlng);
           $latitudeField.val(latlng.lat);
           $longitudeField.val(latlng.lng);
           results.addLayer(L.marker(latlng));
