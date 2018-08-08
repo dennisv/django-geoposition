@@ -34,10 +34,10 @@ class GeopositionWidget(forms.MultiWidget):
             'marker_options': json.dumps(settings.MARKER_OPTIONS),
         }
 
-
     def get_context(self, name, value, attrs):
         # Django 1.11 and up
-        context = super(GeopositionWidget, self).get_context(name, value, attrs)
+        context = super(GeopositionWidget, self).get_context(
+            name, value, attrs)
         context['latitude'] = {
             'widget': context['widget']['subwidgets'][0],
             'label': _("latitude"),
@@ -51,23 +51,30 @@ class GeopositionWidget(forms.MultiWidget):
 
     def format_output(self, rendered_widgets):
         # Django 1.10 and down
-        return render_to_string('geoposition/widgets/geoposition.html', {
-            'latitude': {
-                'html': rendered_widgets[0],
-                'label': _("latitude"),
-            },
-            'longitude': {
-                'html': rendered_widgets[1],
-                'label': _("longitude"),
-            },
-            'config': self.get_config(),
-        })
+        return render_to_string(
+            'geoposition/widgets/geoposition.html', {
+                'latitude': {
+                    'html': rendered_widgets[0],
+                    'label': _("latitude"),
+                },
+                'longitude': {
+                    'html': rendered_widgets[1],
+                    'label': _("longitude"),
+                },
+                'config': self.get_config(),
+            })
 
     class Media:
         js = (
-            '//maps.google.com/maps/api/js?key=%s' % settings.GOOGLE_MAPS_API_KEY,
+            '//unpkg.com/leaflet@1.3.3/dist/leaflet.js',
+            '//unpkg.com/esri-leaflet@2.2.2/dist/esri-leaflet.js',
+            '//unpkg.com/esri-leaflet-geocoder@2.2.13/dist/esri-leaflet-geocoder.js',
             'geoposition/geoposition.js',
         )
         css = {
-            'all': ('geoposition/geoposition.css',)
+            'all': (
+                '//unpkg.com/leaflet@1.3.3/dist/leaflet.css',
+                '//unpkg.com/esri-leaflet-geocoder@2.2.13/dist/esri-leaflet-geocoder.css',
+                'geoposition/geoposition.css',
+            )
         }
